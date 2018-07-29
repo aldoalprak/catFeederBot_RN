@@ -17,17 +17,11 @@ import Store from '../mobx/store'
 
 @observer export default class Profile extends Component {
 
-    state = {
-        data: {
-            position: "Kuro",
-            education: "Pet",
-            profilePicture: "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350",
-        }
+    componentDidMount() {
+        Store.getData()
     }
 
     render() {
-        //#4. add profilePicture variable
-        const { name, position, education, summary, profilePicture } = this.state.data
         return (
             <View>
                 <View>
@@ -60,7 +54,7 @@ import Store from '../mobx/store'
                             zIndex: -1
                         }}
                         large
-                        source={Store.state.profilePicture}
+                        source={{ uri: Store.state.imageUrl }}
                     />
                 </View>
 
@@ -72,8 +66,8 @@ import Store from '../mobx/store'
                             </Button>
                         </Left>
                         <Body>
-                            <Text>Owner Name</Text>
-                            <Text note numberOfLines={1}>Aldo Prakoso</Text>
+                            <Text>Username</Text>
+                            <Text note numberOfLines={1}>{Store.state.username}</Text>
                         </Body>
                     </ListItem>
                     <ListItem icon style={styles.listItem}>
@@ -84,7 +78,7 @@ import Store from '../mobx/store'
                         </Left>
                         <Body>
                             <Text>Email</Text>
-                            <Text note numberOfLines={1}>aldoprakoso1@gmail.com</Text>
+                            <Text note numberOfLines={1}>{Store.state.email}</Text>
                         </Body>
                     </ListItem>
                     <ListItem icon style={styles.listItem}>
@@ -95,7 +89,7 @@ import Store from '../mobx/store'
                         </Left>
                         <Body>
                             <Text>Cat Name</Text>
-                            <Text note numberOfLines={1}>Kuro</Text>
+                            <Text note numberOfLines={1}>{Store.state.catName}</Text>
                         </Body>
                     </ListItem>
                 </View>
@@ -116,7 +110,6 @@ import Store from '../mobx/store'
 }
 
 const styles = StyleSheet.create({
-    //#7. add profilePicture styles with absolute position an       d zIndex larger than another to make on top
     profilePicture: {
         paddingTop: 70,
         zIndex: 1,

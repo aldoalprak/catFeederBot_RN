@@ -15,17 +15,11 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import Store from '../mobx/store'
 import { observer } from 'mobx-react'
 
+
 @observer export default class EditProfile extends Component {
 
-    state = {
-        data: {
-            position: "Kuro",
-            education: "Pet",
-        }
-    }
-
     componentDidMount() {
-
+        Store.getData()
     }
 
     render() {
@@ -45,7 +39,7 @@ import { observer } from 'mobx-react'
                             <Title>Edit Profile</Title>
                         </Body>
                         <Right>
-                            <Button onPress={() => this.props.navigation.navigate('Profile')} transparent>
+                            <Button onPress={() => Store.onSubmitProfile(this.props)} transparent>
                                 <Icon name="ios-checkmark-outline" />
                             </Button>
                         </Right>
@@ -66,7 +60,7 @@ import { observer } from 'mobx-react'
                             zIndex: -1
                         }}
                         large
-                        source={Store.state.profilePicture}
+                        source={Store.state.profilePictureFb}
                     />
                     <TouchableOpacity onPress={() => Store.imagePickerHandler()}><Text>Change Photo</Text></TouchableOpacity>
                 </View>
@@ -79,7 +73,7 @@ import { observer } from 'mobx-react'
                             </Button>
                         </Left>
                         <Body>
-                            <Text>Owner Name</Text>
+                            <Text>Username</Text>
                             <Text note numberOfLines={1}>Aldo Prakoso</Text>
                         </Body>
                     </ListItem>

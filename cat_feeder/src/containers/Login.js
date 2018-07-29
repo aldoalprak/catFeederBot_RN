@@ -14,8 +14,10 @@ import Store from '../mobx/store'
 
     async componentDidMount() {
         // alert("masuk sini")
-        const status = await AsyncStorage.getItem("uid")
-        if (status) {
+        const token = await AsyncStorage.getItem("uid")
+        if (token) {
+
+            console.log(Store.state.token)
             this.props.navigation.navigate("Dashboard")
         }
     }

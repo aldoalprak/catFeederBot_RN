@@ -1,7 +1,9 @@
 import React from "react";
-import { AppRegistry, Image, StatusBar } from "react-native";
+import { AppRegistry, Image, StatusBar,View } from "react-native";
 import { Container, Content, Text, List, ListItem } from "native-base";
-const routes = ["Dashboard", "Schedule Feed", "Notifications", "Profile", "Logout"];
+import Store from '../mobx/store'
+
+const routes = ["Dashboard", "Schedule Feed", "Notifications", "Profile"];
 export default class SideBar extends React.Component {
   render() {
     return (
@@ -22,12 +24,19 @@ export default class SideBar extends React.Component {
           dataArray={routes}
           renderRow={data => {
             return (
-              <ListItem
-                button
-                onPress={() => this.props.navigation.navigate(data)}
-              >
-                <Text>{data}</Text>
-              </ListItem>
+              <View>
+                <ListItem
+                  button
+                  onPress={() => this.props.navigation.navigate(data)}
+                >
+                  <Text>{data}</Text>
+                </ListItem>
+                <ListItem
+                  button
+                  onPress={() => Store.logout()}
+                >
+                </ListItem>
+              </View>
             );
           }}
         />

@@ -6,18 +6,17 @@ import Header from "../components/Header";
 import PercentageCircle from "react-native-percentage-circle";
 import db from "../helpers/firebase.js";
 import { AsyncStorage } from "react-native"
+import Store from '../mobx/store'
 
 class Home extends Component {
 
-  state = {
-    foodStatus: {}
-  }
-
 
   async componentDidMount() {
-    const status = await AsyncStorage.getItem("uid")
-    if (!status) {
+    const token = await AsyncStorage.getItem("uid")
+    if (!token) {
       this.props.navigation.navigate("Logout")
+    } else {
+      Store.getData()
     }
   }
 
@@ -44,7 +43,7 @@ class Home extends Component {
           </Button>
 
           <Button rounded style={styles.lastFedButton}>
-            <Text>Last Fed: 25/07/2018 at 16.00</Text>
+            <Text>Last Fed: 25/07/2018 at 16.00 {Store.state.token}</Text>
           </Button>
         </View>
 
