@@ -16,8 +16,10 @@ class mobxStore {
         timeMorning: "",
         timeEvening: "",
         //=====Profile====
+        profpic: {},
         profileData: {},
         username: "",
+        usernameEdit: "",
         email: "",
         imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa3L3eKHoyB7Gj9S1nDvq5BKQxmygmVzFHiKDP1RlVtfANtxOl",
         catName: ""
@@ -117,7 +119,7 @@ class mobxStore {
                 alert("error")
             } else {
                 console.log("uri===", res.uri, "data===", res.data)
-                this.state.profilePicture = { uri: res.uri }
+                // this.state.profpic = { uri: res.uri }
                 fetch("https://us-central1-catfeeder-bot.cloudfunctions.net/storeImage", {
                     method: "POST",
                     body: JSON.stringify({
@@ -127,21 +129,22 @@ class mobxStore {
                     .catch(err => console.log(err))
                     .then(res => res.json())
                     .then(parsedRes => {
-                        console.log(parsedRes)
-                        this.state.profilePicture = parsedRes
+                        console.log(parsedRes.imageUrl)
+                        this.state.imageUrl = parsedRes.imageUrl
                     })
 
             }
         })
     }
 
-    async onSubmitProfile(props) {
+    async onSubmitProfile(username, email, catName, props) {
         const token = await AsyncStorage.getItem("uid")
         console.log(token)
         db.ref('/users').child(token).set({
-            username: "alprak",
-            email: "alprak93@gmail.com",
-            imageUrl: this.state.profilePicture.imageUrl
+            username,
+            email,
+            catName,
+            imageUrl: this.state.imageUrl
         })
             .then(res => {
                 console.log("add url")
