@@ -12,49 +12,23 @@ import {
     Right
 } from 'native-base'
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import ImagePicker from 'react-native-image-picker'
+import Store from '../mobx/store'
+import { observer } from 'mobx-react'
 
-export default class Profile extends Component {
+@observer export default class EditProfile extends Component {
 
     state = {
         data: {
             position: "Kuro",
             education: "Pet",
-            profilePicture: null
         }
     }
 
-    imagePickerHandler() {
-        ImagePicker.showImagePicker({ title: "Pick an image" }, res => {
-            if (res.didCancel) {
-                alert("canceled")
-            } else if (res.error) {
-                alert("error")
-            } else {
-                console.log("uri===", res.uri, "data===", res.data)
-                this.setState({
-                    profilePicture: { uri: res.uri }
-                })
+    componentDidMount() {
 
-                fetch("https://us-central1-catfeeder-bot.cloudfunctions.net/storeImage", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        image: res.data
-                    })
-                })
-                    .catch(err => console.log(err))
-                    .then(res => res.json())
-                    .then(parsedRes => {
-                        console.log(parsedRes)
-                    })
-
-            }
-        })
     }
 
     render() {
-        //#4. add profilePicture variable
-        const { name, position, education, summary, profilePicture } = this.state.data
         return (
             <View>
                 <View>
@@ -92,9 +66,9 @@ export default class Profile extends Component {
                             zIndex: -1
                         }}
                         large
-                        source={this.state.profilePicture}
+                        source={Store.state.profilePicture}
                     />
-                    <TouchableOpacity onPress={this.imagePickerHandler.bind(this)}><Text>Change Photo</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => Store.imagePickerHandler()}><Text>Change Photo</Text></TouchableOpacity>
                 </View>
 
                 <View style={{ marginTop: 80 }}>
@@ -139,7 +113,6 @@ export default class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-    //#7. add profilePicture styles with absolute position an       d zIndex larger than another to make on top
     profilePicture: {
         paddingTop: 70,
         zIndex: 1,

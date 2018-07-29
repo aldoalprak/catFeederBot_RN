@@ -11,10 +11,11 @@ import {
     ListItem,
     Fab
 } from 'native-base'
-//#2 . add View component for custom styling
 import { View, StyleSheet, Image } from 'react-native'
+import { observer } from 'mobx-react'
+import Store from '../mobx/store'
 
-export default class Profile extends Component {
+@observer export default class Profile extends Component {
 
     state = {
         data: {
@@ -59,7 +60,7 @@ export default class Profile extends Component {
                             zIndex: -1
                         }}
                         large
-                        source={{ uri: profilePicture }}
+                        source={Store.state.profilePicture}
                     />
                 </View>
 

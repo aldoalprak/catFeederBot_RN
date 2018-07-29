@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx'
 import { db, user, storageRef } from '../helpers/firebase'
 import { AsyncStorage } from 'react-native'
+import ImagePicker from 'react-native-image-picker'
 
 class mobxStore {
 
@@ -9,7 +10,8 @@ class mobxStore {
         isDateTimePickerVisible: false,
         isDateTimePickerVisible2: false,
         timeMorning: "",
-        timeEvening: ""
+        timeEvening: "",
+        profilePicture: { uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa3L3eKHoyB7Gj9S1nDvq5BKQxmygmVzFHiKDP1RlVtfANtxOl" }
     }
 
     @action
@@ -75,6 +77,33 @@ class mobxStore {
         } else {
             this.state.modeStatus = false
         }
+    }
+
+    //==================================EditProfile.js===================================
+    imagePickerHandler() {
+        ImagePicker.showImagePicker({ title: "Pick an image" }, res => {
+            if (res.didCancel) {
+                alert("canceled")
+            } else if (res.error) {
+                alert("error")
+            } else {
+                console.log("uri===", res.uri, "data===", res.data)
+                this.state.profilePicture = { uri: res.uri }
+
+                fetch("https://us-central1-catfeeder-bot.cloudfunctions.net/storeImage", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        image: res.data
+                    })
+                })
+                    .catch(err => console.log(err))
+                    .then(res => res.json())
+                    .then(parsedRes => {
+                        console.log(parsedRes)
+                    })
+
+            }
+        })
     }
 
 
