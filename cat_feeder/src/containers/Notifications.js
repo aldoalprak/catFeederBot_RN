@@ -2,8 +2,9 @@ import React, { Component } from "react"
 import { View, Text } from 'react-native'
 import { Header, Left, Body, Button, Icon, Title } from 'native-base'
 import CardNotif from '../components/CardNotif'
+import { observer } from 'mobx-react'
 
-class Notification extends Component {
+@observer class Notification extends Component {
     render() {
         return (
             <View>

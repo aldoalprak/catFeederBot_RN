@@ -7,8 +7,11 @@ import {
   Right,
   Button,
   Icon,
-  Title
+  Title,
+  Badge,
+  Text
 } from "native-base";
+import Store from '../mobx/store'
 
 class HeaderComponent extends Component {
   render() {
@@ -29,7 +32,13 @@ class HeaderComponent extends Component {
           <Title>Cat-Feeder-Bot</Title>
         </Body>
         <Right style={{ flex: 1 }}>
-          <Button transparent onPress={() => this.props.navigation.navigate('Notifications')}>
+          <Button badge vertical transparent onPress={() => Store.gotoNotif(this.props)}>
+            {Store.state.notifStatus ?
+              <Badge><Text style={{ color: "red" }}>1</Text></Badge>
+              :
+              <Text></Text>
+            }
+
             <Icon name="ios-notifications" />
           </Button>
         </Right>

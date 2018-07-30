@@ -23,7 +23,10 @@ class mobxStore {
         usernameEdit: "",
         email: "",
         imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa3L3eKHoyB7Gj9S1nDvq5BKQxmygmVzFHiKDP1RlVtfANtxOl",
-        catName: ""
+        catName: "",
+        //=====Notif======
+        listNotif: {},
+        notifStatus: false
     }
 
     @action
@@ -50,13 +53,13 @@ class mobxStore {
     }
 
     async login(email, password, props) {
-        alert("masuk login")
+        // alert("masuk login")
         console.log("masuklogin", email, password)
         try {
             const response = await user.signInWithEmailAndPassword(email, password)
             if (user.currentUser.emailVerified) {
                 console.log("masuk user")
-                alert("=========", response.user.uid)
+                // alert("=========", response.user.uid)
                 AsyncStorage.setItem("uid", `${response.user.uid}`)
                 // const token = await AsyncStorage.getItem("uid")
                 // this.state.token = token
@@ -71,7 +74,7 @@ class mobxStore {
     }
 
     async logout(props) {
-        alert("masuk")
+        // alert("masuk")
         const remove = await AsyncStorage.removeItem("uid")
         props.navigation.navigate("Logout")
     }
@@ -102,7 +105,8 @@ class mobxStore {
     async feedMe() {
         const token = await AsyncStorage.getItem("uid")
         db.ref("/feeders/").child(token).update({
-            openBucket: true
+            openBucket: true,
+            autoControl: false
         })
 
     }
@@ -213,6 +217,22 @@ class mobxStore {
             })
     }
 
+    //==============================Notifications.js & CardNotif.js=======================
+    async getNotif() {
+        const token = await AsyncStorage.getItem("uid")
+        // alert("masuknotif")
+        db.ref(`feeders/${token}/message`).on("value", snapshot => {
+            console.log("snapshot==", snapshot.val())
+            this.state.listNotif = snapshot.val()
+            this.state.notifStatus = true
+        })
+    }
+
+    gotoNotif(props) {
+        this.state.notifStatus = false
+        props.navigation.navigate('Notifications')
+
+    }
 
 }
 

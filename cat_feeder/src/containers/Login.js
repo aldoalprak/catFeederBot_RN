@@ -35,13 +35,13 @@ import Store from '../mobx/store'
         return (
             <View>
                 {}
-                <View style={{ marginTop: 250 }}>
+                <View style={{ marginTop: 100 }}>
                     <Form>
                         <Item>
                             <Input placeholder="Email" onChangeText={(text) => this.emailChange(text)} />
                         </Item>
                         <Item>
-                            <Input placeholder="Password" onChangeText={(text) => this.passwordChange(text)} />
+                            <Input secureTextEntry={true} placeholder="Password" onChangeText={(text) => this.passwordChange(text)} />
                         </Item>
                     </Form>
                     <Button style={{ marginTop: 30, marginBottom: 5 }} block success rounded large onPress={() => Store.login(this.state.email, this.state.password, this.props)}>

@@ -17,9 +17,10 @@ import { observer } from 'mobx-react'
     if (!token) {
       this.props.navigation.navigate("Logout")
     } else {
-      alert("masuk")
+      // alert("masuk")
       Store.getData()
       Store.getFeeder()
+      Store.getNotif()
     }
   }
 
