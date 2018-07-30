@@ -37,7 +37,7 @@ import { observer } from 'mobx-react'
 
     async getData() {
         const token = await AsyncStorage.getItem("uid")
-        db.ref("users/").child(token).on("value", snapshot => {
+        db.ref("users/").child(token).once("value", snapshot => {
             this.setState({
                 username: snapshot.val().username,
                 email: snapshot.val().email,

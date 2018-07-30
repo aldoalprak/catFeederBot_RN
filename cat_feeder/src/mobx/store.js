@@ -7,8 +7,8 @@ import ImagePicker from 'react-native-image-picker'
 class mobxStore {
 
     @observable state = {
-        //====Auth=====
-        token: "",
+        //====Home==
+        foodLevel: 100,
         //====Mode======
         modeStatus: false,
         isDateTimePickerVisible: false,
@@ -49,11 +49,13 @@ class mobxStore {
     }
 
     async login(email, password, props) {
+        alert("masuk login")
         console.log("masuklogin", email, password)
         try {
             const response = await user.signInWithEmailAndPassword(email, password)
             if (user.currentUser.emailVerified) {
-                console.log("=========", response.user.uid)
+                console.log("masuk user")
+                alert("=========", response.user.uid)
                 AsyncStorage.setItem("uid", `${response.user.uid}`)
                 // const token = await AsyncStorage.getItem("uid")
                 // this.state.token = token
@@ -67,9 +69,10 @@ class mobxStore {
 
     }
 
-    async logout() {
+    async logout(props) {
+        alert("masuk")
         const remove = await AsyncStorage.removeItem("uid")
-        this.props.navigate.navigate("Logout")
+        props.navigation.navigate("Logout")
     }
     //=========================Home.js=======================================
     async getData() {
@@ -82,6 +85,22 @@ class mobxStore {
             this.state.imageUrl = this.state.profileData.imageUrl
             console.log(this.state.profileData)
         })
+    }
+
+    async getFeeder() {
+        const token = await AsyncStorage.getItem("uid")
+        db.ref(`feeders/`).child(token).on("value", snapshot => {
+            this.state.foodLevel = snapshot.val().foodLevel
+            alert(this.state.foodLevel)
+        })
+    }
+
+    async feedMe() {
+        const token = await AsyncStorage.getItem("uid")
+        db.ref("/feeders/").child(token).set({
+            frontObj: true
+        })
+
     }
     //=========================Mode.js=======================================
     _showDateTimePicker() {
@@ -129,7 +148,7 @@ class mobxStore {
                     .catch(err => console.log(err))
                     .then(res => res.json())
                     .then(parsedRes => {
-                        console.log(parsedRes.imageUrl)
+                        console.log(parsedRes)
                         this.state.imageUrl = parsedRes.imageUrl
                     })
 

@@ -22,7 +22,7 @@ const RootStack = createDrawerNavigator(
     EditProfile: { screen: EditProfileScreen },
   },
   {
-    initialRouteName: 'Logout',
+    initialRouteName: 'Dashboard',
     contentComponent: props => <SideBar {...props} />
   }
 );

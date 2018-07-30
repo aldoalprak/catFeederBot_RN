@@ -1,5 +1,5 @@
 import React from "react";
-import { AppRegistry, Image, StatusBar,View } from "react-native";
+import { AppRegistry, Image, StatusBar, View } from "react-native";
 import { Container, Content, Text, List, ListItem } from "native-base";
 import Store from '../mobx/store'
 
@@ -20,26 +20,40 @@ export default class SideBar extends React.Component {
             alignItems: "center"
           }}
         />
-        <List
-          dataArray={routes}
-          renderRow={data => {
-            return (
-              <View>
-                <ListItem
-                  button
-                  onPress={() => this.props.navigation.navigate(data)}
-                >
-                  <Text>{data}</Text>
-                </ListItem>
-                <ListItem
-                  button
-                  onPress={() => Store.logout()}
-                >
-                </ListItem>
-              </View>
-            );
-          }}
-        />
+        <ListItem
+          button
+          onPress={() => this.props.navigation.navigate("Dashboard")}
+        >
+          <Text>Dashboard</Text>
+        </ListItem>
+        <ListItem
+          button
+          onPress={() => this.props.navigation.navigate("Schedule Feed")}
+        >
+          <Text>Schedule Feed</Text>
+        </ListItem>
+        <ListItem
+          button
+          onPress={() => this.props.navigation.navigate("Notifications")}
+        >
+          <Text>Notifications</Text>
+        </ListItem>
+        <ListItem
+          button
+          onPress={() => this.props.navigation.navigate("Profile")}
+        >
+          <Text>Profile</Text>
+        </ListItem>
+        <ListItem
+          button
+          onPress={() => Store.logout(this.props)}
+        >
+          <Text>Logout</Text>
+        </ListItem>
+
+
+
+
       </Content>
     );
   }
