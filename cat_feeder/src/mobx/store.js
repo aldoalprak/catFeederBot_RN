@@ -9,6 +9,7 @@ class mobxStore {
     @observable state = {
         //====Home==
         foodLevel: 100,
+        lastFeed: "",
         //====Mode======
         modeStatus: false,
         isDateTimePickerVisible: false,
@@ -76,6 +77,7 @@ class mobxStore {
     }
     //=========================Home.js=======================================
     async getData() {
+        console.log("masuk getData")
         const token = await AsyncStorage.getItem("uid")
         db.ref("users/").child(token).on("value", snapshot => {
             this.state.profileData = snapshot.val()
@@ -88,17 +90,19 @@ class mobxStore {
     }
 
     async getFeeder() {
+        console.log("masuk getfeeder")
         const token = await AsyncStorage.getItem("uid")
-        db.ref(`feeders/`).child(token).on("value", snapshot => {
+        db.ref("feeders/").child(token).on("value", snapshot => {
             this.state.foodLevel = snapshot.val().foodLevel
-            alert(this.state.foodLevel)
+            this.state.lastFeed = snapshot.val().lastfeed
+            console.log(snapshot.val())
         })
     }
 
     async feedMe() {
         const token = await AsyncStorage.getItem("uid")
-        db.ref("/feeders/").child(token).set({
-            frontObj: true
+        db.ref("/feeders/").child(token).update({
+            openBucket: true
         })
 
     }
@@ -120,13 +124,51 @@ class mobxStore {
         this.state.isDateTimePickerVisible2 = false
     }
 
-    statusChange() {
+    async getModeAndTime() {
+        let morningArr = []
+        let eveningArr = []
+        const token = await AsyncStorage.getItem("uid")
+        db.ref(`feeders/${token}`).once("value", snapshot => {
+            this.state.modeStatus = snapshot.val().autoControl
+            // morningArr = snapshot.val().feedTime.morningFeed.split("")
+            // eveningArr = snapshot.val().feedTime.eveningFeed.split("")
+            // this.state.timeMorning = `0${morningArr[0]}${morningArr[1]}.${morningArr[2]}`
+            // this.state.timeEvening = `${eveningArr[0]}${eveningArr[1]}.${eveningArr[2]}${eveningArr[3]}`
+            this.state.timeMorning = `0${snapshot.val().feedTime.morningFeed}`
+            this.state.timeEvening = snapshot.val().feedTime.eveningFeed
+        })
+    }
+
+    async statusChange() {
+        const token = await AsyncStorage.getItem("uid")
         if (!this.state.modeStatus) {
             this.state.modeStatus = true
+            db.ref(`feeders/${token}`).update({
+                autoControl: true
+            })
         } else {
             this.state.modeStatus = false
+            db.ref(`feeders/${token}`).update({
+                autoControl: false
+            })
         }
     }
+
+    async automaticFeed() {
+        const token = await AsyncStorage.getItem("uid")
+        db.ref(`feeders/${token}/feedTime`).update({
+            morningFeed: Number(this.state.timeMorning.split(":").join("")),
+            eveningFeed: Number(this.state.timeEvening.split(":").join(""))
+        })
+    }
+
+    // _handleDatePicked(time) {
+    //     console.log(time, "====")
+    //     // console.log("====", Number(time.toLocaleTimeString('it-IT').slice(0, 5).split(":").join("")))
+    //     this._hideDateTimePicker();
+    //     this.state.timeMorning = time.toLocaleTimeString('it-IT').slice(0, 5)
+    // };
+
 
     //==================================Profile===================================
 

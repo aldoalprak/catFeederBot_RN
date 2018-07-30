@@ -30,9 +30,11 @@ import styles from "../styles/index.js";
     console.log("====", time.toLocaleTimeString('it-IT'))
     Store._hideDateTimePicker2();
     Store.state.timeEvening = time.toLocaleTimeString('it-IT').slice(0, 5)
-
   };
 
+  componentDidMount() {
+    Store.getModeAndTime()
+  }
 
   render() {
     return (
@@ -106,6 +108,9 @@ import styles from "../styles/index.js";
               </ListItem>
             </List>
 
+            <Button rounded style={styles.lastFedButton} onPress={() => { Store.automaticFeed() }}>
+              <Text>Feed Automatically</Text>
+            </Button>
             <DateTimePicker
               mode="time"
               isVisible={Store.state.isDateTimePickerVisible}
@@ -120,6 +125,7 @@ import styles from "../styles/index.js";
               onCancel={() => Store._hideDateTimePicker2()}
               is24Hour={true}
             />
+
           </View>
           : <Text />}
       </View>

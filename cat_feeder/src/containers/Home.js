@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import { Button, Text, Icon } from "native-base";
 import styles from "../styles";
 import Header from "../components/Header";
-import PercentageCircle from "react-native-percentage-circle";
+import ProgressCircle from "react-native-progress-circle";
 import db from "../helpers/firebase.js";
 import { AsyncStorage } from "react-native"
 import Store from '../mobx/store'
@@ -17,13 +17,10 @@ import { observer } from 'mobx-react'
     if (!token) {
       this.props.navigation.navigate("Logout")
     } else {
+      alert("masuk")
       Store.getData()
-
+      Store.getFeeder()
     }
-  }
-
-  async componentDidUpdate() {
-    Store.getFeeder()
   }
 
   render() {
@@ -31,25 +28,24 @@ import { observer } from 'mobx-react'
       <View>
         <Header navigation={this.props.navigation} />
         <View style={styles.container}>
-          <PercentageCircle
-            radius={120}
+          <ProgressCircle
             percent={Store.state.foodLevel}
-            color={"green"}
-            innerColor={"white"}
-            bgcolor={"#e3e3e3"} // sisa
-            borderWidth={25}
-            children={<Text> Food Meter</Text>}
+            radius={120}
+            borderWidth={10}
+            color="#3399FF"
+            shadowColor="#999"
+            bgColor="#fff"
           >
-
-            {/* <Image style={{width:20,height:20}} source={{require('your image')}} /> */}
-          </PercentageCircle>
+            <Text style={{ fontSize: 28 }}>Food Meter</Text>
+            <Text style={{ fontSize: 18 }}>{Store.state.foodLevel}%</Text>
+          </ProgressCircle>
           <Button iconLeft rounded success style={styles.feedButton} onPress={() => Store.feedMe()}>
             <Icon name="paw" />
             <Text>Feed ME!</Text>
           </Button>
 
           <Button rounded style={styles.lastFedButton}>
-            <Text>Last Fed: 25/07/2018 at 16.00</Text>
+            <Text>Last Feed: {Store.state.lastFeed}</Text>
           </Button>
         </View>
 
