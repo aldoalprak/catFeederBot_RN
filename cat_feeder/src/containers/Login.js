@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { View, TouchableOpacity, AsyncStorage } from 'react-native'
-import { Text, Content, Form, Item, Input, Button } from "native-base"
+import { Text, Content, Form, Item, Input, Button, Header, Body, Title } from "native-base"
 import { observer } from 'mobx-react'
 import Store from '../mobx/store'
 
@@ -34,7 +34,16 @@ import Store from '../mobx/store'
     render() {
         return (
             <View>
-                {}
+                <Header
+                    androidStatusBarColor="#01AC9A"
+                    style={{ backgroundColor: "#01AC9A" }}
+                >
+
+                    <Body style={{ flex: 1 }}>
+                        <Title>Cat-Feeder-Bot</Title>
+                    </Body>
+
+                </Header>
                 <View style={{ marginTop: 100 }}>
                     <Form>
                         <Item>

@@ -39,13 +39,19 @@ class mobxStore {
             email,
             password,
             catName,
-            imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa3L3eKHoyB7Gj9S1nDvq5BKQxmygmVzFHiKDP1RlVtfANtxOl"
+            imageUrl: this.state.imageUrl
         }
         try {
             const response = await user.createUserWithEmailAndPassword(email, password)
-            const snapshot = await db.ref("users/").child(response.user.uid).set(userData)
+            const snapshot = await db.ref("users/").child(response.user.uid).set({
+                username,
+                email,
+                catName,
+                imageUrl: this.state.imageUrl
+            })
             user.currentUser.sendEmailVerification()
             console.log(snapshot, "=====")
+            alert("Please verified your email")
             props.navigation.navigate('Logout')
         } catch (err) {
             console.log(err)
@@ -60,13 +66,30 @@ class mobxStore {
             const response = await user.signInWithEmailAndPassword(email, password)
             if (user.currentUser.emailVerified) {
                 console.log("masuk user")
-                // alert("=========", response.user.uid)
                 AsyncStorage.setItem("uid", `${response.user.uid}`)
-                // const token = await AsyncStorage.getItem("uid")
-                // this.state.token = token
+
+                db.ref("feeders/").child(response.user.uid).set({
+                    autoControl: false,
+                    feedTime: { eveningFeed: 1800, morningFeed: 1000 },
+                    foodLevel: 100,
+                    front_us: "default",
+                    isCatDeepLens: "default",
+                    isSend: true,
+                    lastfeed: "",
+                    message: { "init": "2018-07-30 15:33:30 Welcome to Cat-Feeder-Bot" },
+                    openBucket: false,
+                    top_us: false
+                })
+                    .then(() => {
+                        db.ref("login/").set({
+                            currentUser: response.user.uid
+                        })
+                    })
+
+
                 props.navigation.navigate("Dashboard")
             } else {
-                alert("verify")
+                alert("verify your email")
             }
         } catch (err) {
             console.log(err)
@@ -139,7 +162,7 @@ class mobxStore {
             // eveningArr = snapshot.val().feedTime.eveningFeed.split("")
             // this.state.timeMorning = `0${morningArr[0]}${morningArr[1]}.${morningArr[2]}`
             // this.state.timeEvening = `${eveningArr[0]}${eveningArr[1]}.${eveningArr[2]}${eveningArr[3]}`
-            this.state.timeMorning = `0${snapshot.val().feedTime.morningFeed}`
+            this.state.timeMorning = `${snapshot.val().feedTime.morningFeed}`
             this.state.timeEvening = snapshot.val().feedTime.eveningFeed
         })
     }
