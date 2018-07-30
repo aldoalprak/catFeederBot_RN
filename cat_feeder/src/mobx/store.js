@@ -25,8 +25,9 @@ class mobxStore {
         imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa3L3eKHoyB7Gj9S1nDvq5BKQxmygmVzFHiKDP1RlVtfANtxOl",
         catName: "",
         //=====Notif======
-        listNotif: {},
-        notifStatus: false
+        listNotif: [],
+        notifStatus: false,
+        objNotif: {}
     }
 
     @action
@@ -164,6 +165,9 @@ class mobxStore {
             morningFeed: Number(this.state.timeMorning.split(":").join("")),
             eveningFeed: Number(this.state.timeEvening.split(":").join(""))
         })
+            .then(() => {
+                alert("Schedule has been set")
+            })
     }
 
     // _handleDatePicked(time) {
@@ -220,10 +224,19 @@ class mobxStore {
     //==============================Notifications.js & CardNotif.js=======================
     async getNotif() {
         const token = await AsyncStorage.getItem("uid")
-        // alert("masuknotif")
+
         db.ref(`feeders/${token}/message`).on("value", snapshot => {
-            console.log("snapshot==", snapshot.val())
-            this.state.listNotif = snapshot.val()
+            let arrNotif = []
+            let objNotif = {}
+            console.log("snapshotNotif==", snapshot.val())
+            objNotif = snapshot.val()
+            Object.keys(objNotif).map((key, index) => {
+                console.log("first", arrNotif)
+                arrNotif.push(objNotif[key])
+                console.log("second", arrNotif)
+            })
+            console.log("array==", arrNotif)
+            this.state.listNotif = arrNotif.reverse()
             this.state.notifStatus = true
         })
     }

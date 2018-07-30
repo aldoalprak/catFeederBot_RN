@@ -14,7 +14,7 @@ import {
     Item,
     Label
 } from 'native-base'
-import { View, StyleSheet, Image, TouchableOpacity, AsyncStorage, ScrollView } from 'react-native'
+import { View, StyleSheet, Image, TouchableOpacity, AsyncStorage, ScrollView, KeyboardAvoidingView } from 'react-native'
 import Store from '../mobx/store'
 import { db } from '../helpers/firebase'
 import { observer } from 'mobx-react'
@@ -74,7 +74,7 @@ import { observer } from 'mobx-react'
                     >
                         <Left>
                             <Button onPress={() => this.props.navigation.navigate('Profile')} transparent>
-                                <Icon name="cross" />
+                                <Icon name="ios-close" size={30} />
                             </Button>
                         </Left>
                         <Body>
@@ -82,22 +82,15 @@ import { observer } from 'mobx-react'
                         </Body>
                         <Right>
                             <Button onPress={() => Store.onSubmitProfile(this.state.username, this.state.email, this.state.catName, this.props)} transparent>
-                                <Icon name="ios-checkmark-outline" />
+                                <Icon name="ios-checkmark" size={30} />
                             </Button>
                         </Right>
                     </Header>
                 </View>
-                <ScrollView>
+
+                <ScrollView >
+
                     <View style={styles.profilePicture}>
-                        {/* <Image style={{
-                        height: 120,
-                        alignSelf: "stretch",
-                        zIndex: -20
-                        // justifyContent: "center",
-                        // alignItems: "center"
-                    }}
-                        source={{ uri: "http://www.modafinilsale.com/data/out/41/228044041-cat-backgrounds-for-computer.jpg" }}
-                    /> */}
                         <Thumbnail
                             style={{
                                 zIndex: -1
@@ -108,7 +101,7 @@ import { observer } from 'mobx-react'
                         <TouchableOpacity onPress={() => Store.imagePickerHandler()}><Text>Change Photo</Text></TouchableOpacity>
                     </View>
 
-                    <View style={{ marginTop: 20 }}>
+                    <View style={{ marginTop: 10 }}>
                         <ListItem icon style={styles.listItem}>
                             <Left>
                                 <Button style={{ backgroundColor: "#FF9501" }}>
@@ -116,7 +109,7 @@ import { observer } from 'mobx-react'
                                 </Button>
                             </Left>
                             <Body>
-                                <Item stackedLabel last>
+                                <Item inlineLabel>
                                     <Label>Username</Label>
                                     <Input value={this.state.username} onChangeText={(text) => { this.usernameHandler(text) }} />
                                 </Item>
@@ -129,7 +122,7 @@ import { observer } from 'mobx-react'
                                 </Button>
                             </Left>
                             <Body>
-                                <Item stackedLabel last>
+                                <Item inlineLabel>
                                     <Label>Email</Label>
                                     <Input value={this.state.email} onChangeText={(text) => { this.emailHandler(text) }} />
                                 </Item>
@@ -142,13 +135,14 @@ import { observer } from 'mobx-react'
                                 </Button>
                             </Left>
                             <Body>
-                                <Item stackedLabel last>
+                                <Item inlineLabel>
                                     <Label>Cat Name</Label>
                                     <Input value={this.state.catName} onChangeText={(text) => { this.catNameHandler(text) }} />
                                 </Item>
                             </Body>
                         </ListItem>
                     </View>
+
                 </ScrollView>
             </View>
         )
@@ -158,7 +152,7 @@ import { observer } from 'mobx-react'
 
 const styles = StyleSheet.create({
     profilePicture: {
-        paddingTop: 20,
+        paddingTop: 10,
         zIndex: 1,
         left: 0,
         right: 0,
@@ -166,6 +160,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     listItem: {
-        marginBottom: 30
+        marginBottom: 5
+    },
+    contentContainer: {
     }
 })

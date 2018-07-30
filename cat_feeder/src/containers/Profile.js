@@ -40,15 +40,6 @@ import Store from '../mobx/store'
                     </Header>
                 </View>
                 <View style={styles.profilePicture}>
-                    {/* <Image style={{
-                        height: 120,
-                        alignSelf: "stretch",
-                        zIndex: -20
-                        // justifyContent: "center",
-                        // alignItems: "center"
-                    }}
-                        source={{ uri: "http://www.modafinilsale.com/data/out/41/228044041-cat-backgrounds-for-computer.jpg" }}
-                    /> */}
                     <Thumbnail
                         style={{
                             zIndex: -1
@@ -58,7 +49,7 @@ import Store from '../mobx/store'
                     />
                 </View>
 
-                <View style={{ marginTop: 80 }}>
+                <View style={{ marginTop: 50 }}>
                     <ListItem icon style={styles.listItem}>
                         <Left>
                             <Button style={{ backgroundColor: "#FF9501" }}>
@@ -111,7 +102,9 @@ import Store from '../mobx/store'
 
 const styles = StyleSheet.create({
     profilePicture: {
-        paddingTop: 70,
+        backgroundColor: "#e5e5e0",
+        paddingTop: 55,
+        paddingBottom: 55,
         zIndex: 1,
         left: 0,
         right: 0,

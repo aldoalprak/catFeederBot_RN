@@ -4,16 +4,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 50
+    marginTop: 30
   },
   feedButton: {
     alignSelf: "center",
-    marginTop: 25,
+    marginTop: 15,
     color: "#01AC9A"
   },
   lastFedButton: {
     alignSelf: "center",
-    marginTop: 45,
+    marginTop: 25,
     color: "grey",
 
   }

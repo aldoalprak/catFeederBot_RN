@@ -32,9 +32,9 @@ class HeaderComponent extends Component {
           <Title>Cat-Feeder-Bot</Title>
         </Body>
         <Right style={{ flex: 1 }}>
-          <Button badge vertical transparent onPress={() => Store.gotoNotif(this.props)}>
+          <Button transparent onPress={() => Store.gotoNotif(this.props)}>
             {Store.state.notifStatus ?
-              <Badge><Text style={{ color: "red" }}>1</Text></Badge>
+              <Badge><Text>1</Text></Badge>
               :
               <Text></Text>
             }
