@@ -26,7 +26,11 @@ class mobxStore {
         catName: "",
         //=====Notif======
         listNotif: [],
-        notifStatus: false,
+        listNotifTemp: [],
+        notifStatus: {
+            val: false,
+            redirectFrom: 'back_button'
+        },
         objNotif: {}
     }
 
@@ -109,7 +113,7 @@ class mobxStore {
             this.state.email = this.state.profileData.email
             this.state.catName = this.state.profileData.catName
             this.state.imageUrl = this.state.profileData.imageUrl
-            console.log(this.state.profileData)
+            // console.log(this.state.profileData)
         })
     }
 
@@ -119,7 +123,7 @@ class mobxStore {
         db.ref("feeders/").child(token).on("value", snapshot => {
             this.state.foodLevel = snapshot.val().foodLevel
             this.state.lastFeed = snapshot.val().lastfeed
-            console.log(snapshot.val())
+            // console.log(snapshot.val())
         })
     }
 
@@ -245,24 +249,56 @@ class mobxStore {
     async getNotif() {
         const token = await AsyncStorage.getItem("uid")
 
-        db.ref(`feeders/${token}/message`).on("value", snapshot => {
+        db.ref(`feeders/${token}/message`).on("value", (snapshot) => {
             let arrNotif = []
             let objNotif = {}
-            console.log("snapshotNotif==", snapshot.val())
+
+            // console.log("snapshotNotif==", snapshot.val())
             objNotif = snapshot.val()
-            Object.keys(objNotif).map((key, index) => {
-                console.log("first", arrNotif)
+            Object.keys(objNotif).forEach((key, index) => {
+                // console.log("first", arrNotif)
                 arrNotif.push(objNotif[key])
-                console.log("second", arrNotif)
+                // console.log("second", arrNotif)
             })
-            alert(this.state.notifStatus)
+
+            console.log('arrNotif on getNotif()', arrNotif);
+
+            // this.state.listNotifTemp = [...this.state.listNotif]
+
+            const listNotifPrevCount = this.state.listNotif.length;
+
             this.state.listNotif = arrNotif.reverse()
-            this.state.notifStatus = true
+
+            const listNotifNextCount = this.state.listNotif.length;
+
+            this.state.notifStatus.val = true;
+
+            if (this.state.notifStatus.redirectFrom === 'back_button' && listNotifPrevCount !== listNotifNextCount) {
+                this.state.notifStatus.val = true;
+            } else {
+                this.state.notifStatus.val = false;
+            }
+
+            console.log(listNotifPrevCount, listNotifNextCount);
+
+            console.log('this.state.notifstatus', this.state.notifStatus);
+
+            // if (this.state.listNotif.length === this.state.listNotifTemp.length) {
+            //     console.log("masuk false", "length=", this.state.listNotif.length, this.state.listNotifTemp.length)
+
+            //     this.state.notifStatus = false
+            // } else {
+            //     console.log("masuk true", "length=", this.state.listNotif.length, this.state.listNotifTemp.length)
+            //     this.state.notifStatus = true
+
+            // }
+            // alert(this.state.notifStatus)
+
+            // console.log("== =======notifstatus======", this.state.notifStatus)
         })
     }
 
     gotoNotif(props) {
-        this.state.notifStatus = false
         props.navigation.navigate('Notifications')
 
     }

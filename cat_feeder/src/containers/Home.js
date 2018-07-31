@@ -4,7 +4,7 @@ import { Button, Thumbnail, Text, Icon } from "native-base";
 import styles from "../styles";
 import Header from "../components/Header";
 import ProgressCircle from "react-native-progress-circle";
-import db from "../helpers/firebase.js";
+import { db } from "../helpers/firebase.js";
 import { AsyncStorage } from "react-native"
 import Store from '../mobx/store'
 import { observer } from 'mobx-react'
@@ -18,10 +18,16 @@ import { observer } from 'mobx-react'
       this.props.navigation.navigate("Logout")
     } else {
       // alert("masuk")
+      console.log('didMount Home');
       Store.getData()
       Store.getFeeder()
       Store.getNotif()
     }
+  }
+
+  async componentWillUnmount() {
+    const token = await AsyncStorage.getItem("uid")
+    db.ref(`feeders/${token}/message2`).off("value")
   }
 
   render() {

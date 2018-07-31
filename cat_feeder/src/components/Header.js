@@ -12,8 +12,9 @@ import {
   Text
 } from "native-base";
 import Store from '../mobx/store'
+import { observer } from 'mobx-react'
 
-class HeaderComponent extends Component {
+@observer class HeaderComponent extends Component {
   render() {
     return (
       <Header
@@ -33,7 +34,7 @@ class HeaderComponent extends Component {
         </Body>
         <Right style={{ flex: 1 }}>
           <Button transparent onPress={() => Store.gotoNotif(this.props)}>
-            {Store.state.notifStatus ?
+            {Store.state.notifStatus.val ?
               <Badge><Text>1</Text></Badge>
               :
               <Text></Text>
