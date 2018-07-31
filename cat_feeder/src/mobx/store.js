@@ -49,6 +49,19 @@ class mobxStore {
                 catName,
                 imageUrl: this.state.imageUrl
             })
+            await db.ref("feeders/").child(response.user.uid).set({
+                autoControl: false,
+                feedTime: { eveningFeed: 1800, morningFeed: 1000 },
+                foodLevel: 100,
+                front_us: "default",
+                isCatDeepLens: "default",
+                isSend: true,
+                lastfeed: "",
+                message: { "init": "2018-07-30 15:33:30 Welcome to Cat-Feeder-Bot" },
+                openBucket: false,
+                top_us: false
+            })
+
             user.currentUser.sendEmailVerification()
             console.log(snapshot, "=====")
             alert("Please verified your email")
@@ -68,25 +81,9 @@ class mobxStore {
                 console.log("masuk user")
                 AsyncStorage.setItem("uid", `${response.user.uid}`)
 
-                db.ref("feeders/").child(response.user.uid).set({
-                    autoControl: false,
-                    feedTime: { eveningFeed: 1800, morningFeed: 1000 },
-                    foodLevel: 100,
-                    front_us: "default",
-                    isCatDeepLens: "default",
-                    isSend: true,
-                    lastfeed: "",
-                    message: { "init": "2018-07-30 15:33:30 Welcome to Cat-Feeder-Bot" },
-                    openBucket: false,
-                    top_us: false
+                await db.ref("login/").set({
+                    currentUser: response.user.uid
                 })
-                    .then(() => {
-                        db.ref("login/").set({
-                            currentUser: response.user.uid
-                        })
-                    })
-
-
                 props.navigation.navigate("Dashboard")
             } else {
                 alert("verify your email")
@@ -258,7 +255,7 @@ class mobxStore {
                 arrNotif.push(objNotif[key])
                 console.log("second", arrNotif)
             })
-            console.log("array==", arrNotif)
+            alert(this.state.notifStatus)
             this.state.listNotif = arrNotif.reverse()
             this.state.notifStatus = true
         })

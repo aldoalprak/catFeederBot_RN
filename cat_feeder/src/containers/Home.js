@@ -29,15 +29,18 @@ import { observer } from 'mobx-react'
       <View>
         <Header navigation={this.props.navigation} />
 
+
         <View style={styles.container}>
+          <Text>{Store.state.catName}</Text>
           <Thumbnail
             style={{
               zIndex: -1,
+              marginBottom: 10
             }}
             large
             source={{ uri: Store.state.imageUrl }}
           />
-          <Text>{Store.state.catName}</Text>
+
           <ProgressCircle
             percent={Store.state.foodLevel}
             radius={95}
