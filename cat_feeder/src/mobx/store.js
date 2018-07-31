@@ -33,14 +33,14 @@ class mobxStore {
             redirectFrom: 'back_button'
         },
         objNotif: {},
-        countNotif: 0,
+        // countNotif: 0,
         tesCon: "Ping"
     }
 
     @action
     //========================Auth (Register,login,logout)===================================
     async register(username, email, catName, password, props) {
-        console.log("msk submit", "username=", username, "email", email, "catname=", catName, "password=", password)
+        // console.log("msk submit", "username=", username, "email", email, "catname=", catName, "password=", password)
         userData = {
             username,
             email,
@@ -67,7 +67,7 @@ class mobxStore {
             })
 
             user.currentUser.sendEmailVerification()
-            console.log(snapshot, "=====")
+            // console.log(snapshot, "=====")
             alert("Please verified your email")
             props.navigation.navigate('Logout')
         } catch (err) {
@@ -78,11 +78,11 @@ class mobxStore {
 
     async login(email, password, props) {
         // alert("masuk login")
-        console.log("masuklogin", email, password)
+        // console.log("masuklogin", email, password)
         try {
             const response = await user.signInWithEmailAndPassword(email, password)
             if (user.currentUser.emailVerified) {
-                console.log("masuk user")
+                // console.log("masuk user")
                 AsyncStorage.setItem("uid", `${response.user.uid}`)
 
                 await db.ref("login/").set({
@@ -105,7 +105,7 @@ class mobxStore {
     }
     //=========================Home.js=======================================
     async getData() {
-        console.log("masuk getData")
+        // console.log("masuk getData")
         const token = await AsyncStorage.getItem("uid")
         db.ref("users/").child(token).on("value", snapshot => {
             this.state.profileData = snapshot.val()
@@ -118,7 +118,7 @@ class mobxStore {
     }
 
     async getFeeder() {
-        console.log("masuk getfeeder")
+        // console.log("masuk getfeeder")
         const token = await AsyncStorage.getItem("uid")
         db.ref("feeders/").child(token).on("value", snapshot => {
             this.state.foodLevel = snapshot.val().foodLevel
@@ -211,7 +211,7 @@ class mobxStore {
             } else if (res.error) {
                 alert("error")
             } else {
-                console.log("uri===", res.uri, "data===", res.data)
+                // console.log("uri===", res.uri, "data===", res.data)
                 // this.state.profpic = { uri: res.uri }
                 fetch("https://us-central1-catfeeder-bot.cloudfunctions.net/storeImage", {
                     method: "POST",
@@ -222,7 +222,7 @@ class mobxStore {
                     .catch(err => console.log(err))
                     .then(res => res.json())
                     .then(parsedRes => {
-                        console.log(parsedRes)
+                        // console.log(parsedRes)
                         this.state.imageUrl = parsedRes.imageUrl
                     })
 
@@ -232,7 +232,7 @@ class mobxStore {
 
     async onSubmitProfile(username, email, catName, props) {
         const token = await AsyncStorage.getItem("uid")
-        console.log(token)
+        // console.log(token)
         db.ref('/users').child(token).set({
             username,
             email,
@@ -240,7 +240,7 @@ class mobxStore {
             imageUrl: this.state.imageUrl
         })
             .then(res => {
-                console.log("add url")
+                // console.log("add url")
                 props.navigation.navigate('Profile')
             })
     }
@@ -252,7 +252,6 @@ class mobxStore {
         db.ref(`feeders/${token}/message`).on("value", (snapshot) => {
             let arrNotif = []
             let objNotif = {}
-
             // console.log("snapshotNotif==", snapshot.val())
             objNotif = snapshot.val()
             Object.keys(objNotif).forEach((key, index) => {
@@ -261,7 +260,7 @@ class mobxStore {
                 // console.log("second", arrNotif)
             })
 
-            console.log('arrNotif on getNotif()', arrNotif);
+            // console.log('arrNotif on getNotif()', arrNotif);
 
             // this.state.listNotifTemp = [...this.state.listNotif]
 
@@ -279,10 +278,10 @@ class mobxStore {
                 this.state.notifStatus.val = false;
             }
 
-            this.state.countNotif = listNotifNextCount - listNotifPrevCount
-            console.log(listNotifPrevCount, listNotifNextCount);
+            // this.state.countNotif = listNotifNextCount - listNotifPrevCount
+            // console.log("ceksss", listNotifPrevCount, listNotifNextCount);
 
-            console.log('this.state.notifstatus', this.state.notifStatus);
+            // console.log('this.state.notifstatus', this.state.notifStatus);
 
             // if (this.state.listNotif.length === this.state.listNotifTemp.length) {
             //     console.log("masuk false", "length=", this.state.listNotif.length, this.state.listNotifTemp.length)

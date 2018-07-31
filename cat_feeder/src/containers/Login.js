@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { View, TouchableOpacity, AsyncStorage, Image, ScrollView } from 'react-native'
-import { Text, Content, Form, Item, Input, Button, Header, Body, Title } from "native-base"
+import { Text, Content, Form, Item, Input, Button, Header } from "native-base"
 import { observer } from 'mobx-react'
 import Store from '../mobx/store'
 

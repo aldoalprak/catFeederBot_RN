@@ -36,7 +36,7 @@ import { observer } from 'mobx-react'
         <Right style={{ flex: 1 }}>
           <Button transparent onPress={() => Store.gotoNotif(this.props)}>
             {Store.state.notifStatus.val ?
-              <Badge><Text>1</Text></Badge>
+              <Badge><Text style={{color:"red"}}>1</Text></Badge>
               :
               <Text></Text>
             }

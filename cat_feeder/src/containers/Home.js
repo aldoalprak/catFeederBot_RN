@@ -17,7 +17,6 @@ import { observer } from 'mobx-react'
     if (!token) {
       this.props.navigation.navigate("Logout")
     } else {
-      // alert("masuk")
       console.log('didMount Home');
       Store.getData()
       Store.getFeeder()
