@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-import { Image, ScrollView, StyleSheet } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Right, Text, Button, Icon, Left, Body, View } from 'native-base';
+import { Image, ScrollView, StyleSheet, AsyncStorage } from 'react-native';
+import { Card, CardItem, Right, Text, Button, Icon, Left, Body } from 'native-base';
 import Store from '../mobx/store'
 import { observer } from 'mobx-react'
+import { db } from "../helpers/firebase.js";
 
 @observer export default class CardNotif extends Component {
 
     componentDidMount() {
-        // Store.getNotif()
-        console.log(Store.state.listNotif, "////")
+        Store.getNotif()
+        Store.state.listNotif
+    }
+
+    async componentWillUnmount() {
+        const token = await AsyncStorage.getItem("uid")
+        db.ref(`feeders/${token}/message`).off("value")
     }
 
     render() {
@@ -39,7 +45,6 @@ import { observer } from 'mobx-react'
                             </CardItem>
                             <CardItem>
                                 <Body>
-                                    {/* <Image source={{ uri: 'Image URL' }} style={{ height: 200, width: 200, flex: 1 }} /> */}
                                     <Text>
                                         {key.slice(20)}
                                     </Text>

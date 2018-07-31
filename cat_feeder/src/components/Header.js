@@ -11,7 +11,7 @@ import {
   Badge,
   Text
 } from "native-base";
-import {Image} from 'react-native'
+import { Image } from 'react-native'
 import Store from '../mobx/store'
 import { observer } from 'mobx-react'
 
@@ -31,7 +31,7 @@ import { observer } from 'mobx-react'
           </Button>
         </Left>
         <Body style={{ flex: 1 }}>
-          <Image style={{resizeMode:'center',width:150,height:80}}source={require('../image/cat_feeder_logo.png')} />
+          <Image style={{ resizeMode: 'center', width: 150, height: 80 }} source={require('../image/cat_feeder_logo.png')} />
         </Body>
         <Right style={{ flex: 1 }}>
           <Button transparent onPress={() => Store.gotoNotif(this.props)}>

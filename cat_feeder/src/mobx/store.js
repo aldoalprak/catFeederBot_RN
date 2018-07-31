@@ -10,6 +10,7 @@ class mobxStore {
         //====Home==
         foodLevel: 100,
         lastFeed: "",
+        statusConnect: false,
         //====Mode======
         modeStatus: false,
         isDateTimePickerVisible: false,
@@ -31,7 +32,9 @@ class mobxStore {
             val: false,
             redirectFrom: 'back_button'
         },
-        objNotif: {}
+        objNotif: {},
+        countNotif: 0,
+        tesCon: "Ping"
     }
 
     @action
@@ -57,13 +60,10 @@ class mobxStore {
                 autoControl: false,
                 feedTime: { eveningFeed: 1800, morningFeed: 1000 },
                 foodLevel: 100,
-                front_us: "default",
-                isCatDeepLens: "default",
-                isSend: true,
                 lastfeed: "",
-                message: { "init": "2018-07-30 15:33:30 Welcome to Cat-Feeder-Bot" },
-                openBucket: false,
-                top_us: false
+                message: { "-A": "2018-07-30 15:33:30 Welcome to Cat-Feeder-Bot" },
+                connectReq: false,
+                connectStat: false
             })
 
             user.currentUser.sendEmailVerification()
@@ -123,7 +123,7 @@ class mobxStore {
         db.ref("feeders/").child(token).on("value", snapshot => {
             this.state.foodLevel = snapshot.val().foodLevel
             this.state.lastFeed = snapshot.val().lastfeed
-            // console.log(snapshot.val())
+            this.state.statusConnect = snapshot.val().connectStat
         })
     }
 
@@ -135,6 +135,14 @@ class mobxStore {
         })
 
     }
+
+    async pingButton() {
+        const token = await AsyncStorage.getItem("uid")
+        db.ref("/feeders/").child(token).update({
+            connectReq: "ping"
+        })
+    }
+
     //=========================Mode.js=======================================
     _showDateTimePicker() {
         // alert("hello")
@@ -193,14 +201,6 @@ class mobxStore {
                 alert("Schedule has been set")
             })
     }
-
-    // _handleDatePicked(time) {
-    //     console.log(time, "====")
-    //     // console.log("====", Number(time.toLocaleTimeString('it-IT').slice(0, 5).split(":").join("")))
-    //     this._hideDateTimePicker();
-    //     this.state.timeMorning = time.toLocaleTimeString('it-IT').slice(0, 5)
-    // };
-
 
     //==================================Profile===================================
 
@@ -279,6 +279,7 @@ class mobxStore {
                 this.state.notifStatus.val = false;
             }
 
+            this.state.countNotif = listNotifNextCount - listNotifPrevCount
             console.log(listNotifPrevCount, listNotifNextCount);
 
             console.log('this.state.notifstatus', this.state.notifStatus);

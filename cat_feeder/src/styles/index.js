@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 30
+    marginTop: 10
   },
   feedButton: {
     alignSelf: "center",
@@ -16,6 +16,26 @@ const styles = StyleSheet.create({
     marginTop: 25,
     color: "grey",
 
+  },
+  pingButtonRed: {
+    borderRadius: 60,
+    borderWidth: 1,
+    backgroundColor: "red",
+    width: 40,
+    height: 40,
+    margin: 3,
+    borderColor: "black",
+    borderWidth: 5
+  },
+  pingButtonGreen: {
+    borderRadius: 60,
+    borderWidth: 1,
+    backgroundColor: "#53f442",
+    width: 40,
+    height: 40,
+    margin: 3,
+    borderColor: "black",
+    borderWidth: 5
   }
 });
 

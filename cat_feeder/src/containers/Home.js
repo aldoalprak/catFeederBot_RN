@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Button, Thumbnail, Text, Icon } from "native-base";
 import styles from "../styles";
 import Header from "../components/Header";
@@ -30,7 +30,9 @@ import { observer } from 'mobx-react'
     db.ref(`feeders/${token}/message`).off("value")
   }
 
+
   render() {
+
     return (
       <View>
         <Header navigation={this.props.navigation} />
@@ -46,7 +48,10 @@ import { observer } from 'mobx-react'
             large
             source={{ uri: Store.state.imageUrl }}
           />
-
+          <TouchableOpacity
+            style={!Store.state.statusConnect ? styles.pingButtonRed : styles.pingButtonGreen}
+            onPress={() => Store.pingButton()}
+          />
           <ProgressCircle
             percent={Store.state.foodLevel}
             radius={95}
