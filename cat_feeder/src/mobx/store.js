@@ -8,9 +8,10 @@ class mobxStore {
 
     @observable state = {
         //====Home==
-        foodLevel: 100,
+        foodLevel: 0,
         lastFeed: "",
         statusConnect: false,
+        countAlertFoodLevel: 0,
         //====Mode======
         modeStatus: false,
         isDateTimePickerVisible: false,
@@ -59,7 +60,7 @@ class mobxStore {
             await db.ref("feeders/").child(response.user.uid).set({
                 autoControl: false,
                 feedTime: { eveningFeed: 1800, morningFeed: 1000 },
-                foodLevel: 100,
+                foodLevel: 0,
                 lastfeed: "",
                 message: { "-A": "2018-07-30 15:33:30 Welcome to Cat-Feeder-Bot" },
                 connectReq: false,
@@ -115,6 +116,7 @@ class mobxStore {
             this.state.imageUrl = this.state.profileData.imageUrl
             // console.log(this.state.profileData)
         })
+
     }
 
     async getFeeder() {
@@ -124,7 +126,16 @@ class mobxStore {
             this.state.foodLevel = snapshot.val().foodLevel
             this.state.lastFeed = snapshot.val().lastfeed
             this.state.statusConnect = snapshot.val().connectStat
+            if (snapshot.val().foodLevel > 25) {
+                this.state.countAlertFoodLevel = 0
+            }
+            if (this.state.countAlertFoodLevel == 0 && snapshot.val().foodLevel <= 25) {
+                alert("You should refill your cat food!")
+                this.state.countAlertFoodLevel = this.state.countAlertFoodLevel + 1
+            }
+
         })
+
     }
 
     async feedMe() {
@@ -142,6 +153,8 @@ class mobxStore {
             connectReq: "ping"
         })
     }
+
+
 
     //=========================Mode.js=======================================
     _showDateTimePicker() {
