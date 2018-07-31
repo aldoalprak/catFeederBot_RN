@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { ScrollView, View, TouchableOpacity } from 'react-native'
+import { ScrollView, View, TouchableOpacity, Image } from 'react-native'
 import { Text, Content, Form, Item, Input, Button, Title, Header, Body } from "native-base"
 import { observer } from "mobx-react"
 import Store from '../mobx/store'
@@ -48,14 +48,12 @@ import Store from '../mobx/store'
                     androidStatusBarColor="#01AC9A"
                     style={{ backgroundColor: "#01AC9A" }}
                 >
-
-                    <Body style={{ flex: 1 }}>
-                        <Title>Cat-Feeder-Bot</Title>
-                    </Body>
-
                 </Header>
                 <ScrollView>
-                    <View style={{ marginTop: 100 }}>
+                    <View style={{ alignItems: "center", justifyContent: "center" }} >
+                        <Image source={require('../image/cat_feeder_logo.png')} />
+                    </View>
+                    <View style={{ marginTop: 5 }}>
                         <Form>
                             <Item>
                                 <Input placeholder="Username" onChangeText={(text) => this.usernameChange(text)} />

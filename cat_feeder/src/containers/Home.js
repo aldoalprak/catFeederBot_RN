@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import { Button, Thumbnail, Text, Icon } from "native-base";
 import styles from "../styles";
 import Header from "../components/Header";
@@ -27,7 +27,7 @@ import { observer } from 'mobx-react'
 
   async componentWillUnmount() {
     const token = await AsyncStorage.getItem("uid")
-    db.ref(`feeders/${token}/message2`).off("value")
+    db.ref(`feeders/${token}/message`).off("value")
   }
 
   render() {
