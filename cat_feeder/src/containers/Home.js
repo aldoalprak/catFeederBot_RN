@@ -27,6 +27,7 @@ import { observer } from 'mobx-react'
   async componentWillUnmount() {
     const token = await AsyncStorage.getItem("uid")
     db.ref(`feeders/${token}/message`).off("value")
+    db.ref("feeders/").child(token).off("value")
   }
 
 

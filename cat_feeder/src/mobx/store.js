@@ -133,6 +133,18 @@ class mobxStore {
                 alert("You should refill your cat food!")
                 this.state.countAlertFoodLevel = this.state.countAlertFoodLevel + 1
             }
+            if (snapshot.val().allert.indexOf("Success to open bucket") !== -1) {
+                alert("Succes to open bucket")
+                db.ref(`feeders/${token}`).update({
+                    allert: ""
+                })
+            }
+            if (snapshot.val().allert.indexOf("Failed to open bucket") !== -1) {
+                alert("Failed to open bucket")
+                db.ref(`feeders/${token}`).update({
+                    allert: ""
+                })
+            }
 
         })
 
