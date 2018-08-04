@@ -1,2 +1,2 @@
 1. Register Screen
-<img src="https://www.dropbox.com/s/f353gn91zojl0ge/Screenshot_20180803-083911.png" />
+<img src="https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?auto=compress&cs=tinysrgb&h=350" />
